@@ -1,80 +1,33 @@
 (ns colours.colours
-  (:gen-class) 
-  (:import (javax.swing JLabel JPanel JFrame JTextField)
-           (javax.swing.event DocumentListener)
-           (java.awt GridBagLayout GridBagConstraints Insets))) 
+  (:use [clj-swing core frame label button combo-box list panel document text-field tree]) 
+  (:import (javax.swing UIManager SwingUtilities)
+           (java.awt GridBagLayout GridBagConstraints))) 
 
-(defmacro set-grid! [constraints field value]
-  `(set! (. ~constraints ~(symbol (name field)))
-         ~(if (keyword? value)
-            `(. GridBagConstraints ~(symbol (name value)))
-            value)))
+(def sr (ref '["Quick sort" "Bubble Sort"]))
+(def lm (ref '["Bla" "Blubb"]))
+(def str-ref (ref "A String!"))
 
-(defmacro grid-bag-layout [container & body]
-  (let [c (gensym "c")
-        cntr (gensym "cntr")]
-    `(let [~c (new java.awt.GridBagConstraints)
-           ~cntr ~container]
-       ~@(loop [result '() body body]
-           (if (empty? body)
-             (reverse result)
-             (let [expr (first body)]
-               (if (keyword? expr)
-                 (recur (cons `(set-grid! ~c ~expr
-                                          ~(second body))
-                              result)
-                        (next (next body)))
-                 (recur (cons `(.add ~cntr ~expr ~c)
-                              result)
-                        (next body)))))))))
+(def selected (atom nil))
+(def nativeLF (. UIManager getSystemLookAndFeelClassName))
 
-(defn f-to-c [f]
-  (* (- f 32) 5/9))
+(. UIManager setLookAndFeel nativeLF)
 
-(defn c-to-f [c]
-  (+ (* c 9/5) 32))
-
-(defn parse [s]
-  (try (Double/parseDouble (.trim s))
-    (catch NumberFormatException e nil)))
-
-(defn display [n]
-  (str (Math/round (float n))))
-
-(defn update-temp [source target convert]
-  (when (.isFocusOwner source)
-    (if-let [n (parse (.getText source))]
-      (.setText target (display (convert n)))
-      (.setText target ""))))
-
-(defn listen-temp [source target f]
-  (.. source getDocument
-    (addDocumentListener
-      (proxy [DocumentListener] []
-        (insertUpdate [e] (update-temp source target f))
-        (removeUpdate [e] (update-temp source target f))
-        (changedUpdate [e] )))))
-
-(defn temp-app []
-  (let [celsius (JTextField. 3)
-        fahrenheit (JTextField. 3)
-        panel (doto (JPanel. (GridBagLayout.))
-                (grid-bag-layout
-                  :gridx 0, :gridy 0, :anchor :LINE_END
-                  :insets (Insets. 5 5 5 5)
-                  (JLabel. "Degrees Celsius:")
-                  :gridy 1
-                  (JLabel. "Degrees Fahrenheit:")
-                  :gridx 1, :gridy 0, :anchor :LINE_START
-                  celsius
-                  :gridy 1
-                  fahrenheit))]
-    (listen-temp celsius fahrenheit c-to-f)
-    (listen-temp fahrenheit celsius f-to-c)
-    (doto (JFrame. "Temperature Converter")
-      (.setContentPane panel)
-      (.pack)
-      (.setVisible true))))
+(defn app []
+  (frame :title "Sort Visualizer" :layout (GridBagLayout.) :constrains (java.awt.GridBagConstraints.) :name fr
+         :show true :pack true
+         [:gridx 0 :gridy 0 :anchor :LINE_END
+          _ (label "Algorithms")
+          :gridy 1
+          _ (label "Button")
+          :gridx 1 :gridy 0 :anchor :LINE_START
+          _ (combo-box [] :model (seq-ref-combobox-model sr selected))
+          :gridy 1
+          _ (button "Run Algorithm" 
+                    :action ([_] (if @selected (dosync (alter lm conj @selected)))))
+          :gridx 0 :gridy 2 :gridwidth 2 :anchor :LINE_START
+          _ (text-field :str-ref str-ref :columns 10)
+          :gridx 3 :gridy 0 :gridheight 3 :anchor :CENTER
+          _ (scroll-panel (jlist :model (seq-ref-list-model lm)) :preferred-size [150 100])])) 
 
 (defn -main [& args]
-  (temp-app))
+  (SwingUtilities/invokeLater app))
