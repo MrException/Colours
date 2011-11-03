@@ -1,0 +1,72 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.6)
+    chunky_png (1.2.5)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.1.2)
+    compass (0.11.5)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
+    configuration (1.3.1)
+    em-websocket (0.3.5)
+      addressable (>= 2.1.1)
+      eventmachine (>= 0.12.9)
+    eventmachine (0.12.10)
+    execjs (1.2.9)
+      multi_json (~> 1.0)
+    ffi (1.0.10)
+    fssm (0.2.7)
+    guard (0.8.8)
+      thor (~> 0.14.6)
+    guard-coffeescript (0.5.2)
+      coffee-script (>= 2.2.0)
+      guard (>= 0.8.3)
+    guard-compass (0.0.6)
+      compass (>= 0.10.5)
+      guard (>= 0.2.1)
+    guard-haml (0.3.1)
+      guard (>= 0.4)
+      haml (>= 3.0)
+    guard-livereload (0.3.1)
+      em-websocket (>= 0.2.0)
+      guard (>= 0.4.0)
+      multi_json (~> 1.0.3)
+    guard-webrick (0.1.1)
+      ffi (~> 1.0.7)
+      guard (~> 0.3)
+      launchy (~> 0.4.0)
+      spoon (~> 0.0.1)
+    haml (3.1.3)
+    html5-boilerplate (1.0.0)
+      compass (>= 0.11.1)
+    launchy (0.4.0)
+      configuration (>= 0.0.5)
+      rake (>= 0.8.1)
+    libnotify (0.5.9)
+    multi_json (1.0.3)
+    rake (0.9.2.2)
+    rb-inotify (0.8.8)
+      ffi (>= 0.5.0)
+    sass (3.1.10)
+    spoon (0.0.1)
+    thor (0.14.6)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  compass
+  guard
+  guard-coffeescript
+  guard-compass
+  guard-haml
+  guard-livereload
+  guard-webrick
+  haml
+  html5-boilerplate
+  libnotify
+  rb-inotify

@@ -1,0 +1,2 @@
+#rvm use ruby-1.9.2-p290@aboveall
+rvm use ruby-1.9.3-p0@colours
