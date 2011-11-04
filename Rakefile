@@ -16,5 +16,12 @@ task :html do
   end
 end
 
+desc "Move all external JS lib files into the site"
+task :lib do
+  Dir.glob('lib/*.js') do |f|
+    cp f, 'site/js/'
+  end
+end
+
 desc "Compile everything"
 task default: [:css, :js, :html]
