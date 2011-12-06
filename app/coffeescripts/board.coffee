@@ -1,5 +1,4 @@
 define ["underscore"], (_) ->
-
   class Board
     constructor: (@size) ->
       @state = new Array(@size)
