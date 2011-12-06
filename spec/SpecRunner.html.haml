@@ -1,0 +1,25 @@
+!!! 5
+%html
+  %head
+    %title Jasmine Spec Runner
+    %link{ rel: "shortcut icon", type: "image/png", href: "js/jasmine/jasmine_favicon.png" }/
+    %link{ rel: "stylesheet", type: "text/css", href: "js/jasmine/jasmine.css" }/
+    %script{ src: "js/jasmine/jasmine.js" }
+    %script{ src: "js/jasmine/jasmine-html.js" }
+
+    %script{ src: "js/require.js" }
+    %script{ src: "js/jquery.js" }
+
+    :javascript
+      require.config({
+        baseUrl : 'js'
+      });
+      require([
+          //include all specs to be run
+          'spec/ModuleSpec'
+        ],
+        function() {
+          //run tests
+          jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+          jasmine.getEnv().execute();
+      });
