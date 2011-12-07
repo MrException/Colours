@@ -3,7 +3,7 @@ define ["underscore"], (_) ->
     constructor: (@ctx) ->
 
     clear: ->
-      @ctx.clearRect(0,0,400,400)
+      @ctx.clearRect(0,0,400,500)
 
     line: (sx,sy,ex,ey) ->
       @ctx.beginPath()
@@ -29,6 +29,10 @@ define ["underscore"], (_) ->
       @ctx.fill()
       @
 
-  return {
-    Drawer: Drawer
-  }
+    text: (s, x, y) ->
+      @ctx.fillStyle = '#000000'
+      @ctx.font = '20pt Arial'
+      @ctx.fillText(s, x, y)
+      @
+
+  { Drawer: Drawer }

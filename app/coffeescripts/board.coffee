@@ -1,4 +1,4 @@
-define ["underscore"], (_) ->
+define ["underscore", "util"], (_, util) ->
   class Board
     constructor: (@size) ->
       @state = new Array(@size)
@@ -48,9 +48,9 @@ define ["underscore"], (_) ->
     done: ->
       # loops through everything, kind of ineficient
       win = true
-      _.each @state (row) ->
-        _.each row, (cell) ->
-          win = false if cell != @curColour
+      _.each @state, (row) =>
+        _.each row, (cell) =>
+          win = false if cell isnt @curColour
       win
 
   { Board: Board }

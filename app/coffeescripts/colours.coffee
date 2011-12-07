@@ -23,17 +23,21 @@ define ["underscore", "util", "board", "drawer", "button"], (_, util, b, d, bu) 
 
     draw: ->
       @drawer.clear()
-      @drawer.squareS(50,50,300,300)
-      x = 50
-      y = 50
-      _.each @board.state, (row) =>
-        _.each row, (c) =>
-          @drawer.squareF(x, y, @cellDim, @cellDim, util.colour(c))
-          x += @cellDim
-        y += @cellDim
+      if @board.done()
+        @drawer.text("WINNER!", 50, 270)
+      else
+        @drawer.text(@clicks.toString(), 0, 20)
+        @drawer.squareS(50,50,300,300)
         x = 50
-      _.each @buttons, (but) =>
-        but.draw()
+        y = 50
+        _.each @board.state, (row) =>
+          _.each row, (c) =>
+            @drawer.squareF(x, y, @cellDim, @cellDim, util.colour(c))
+            x += @cellDim
+          y += @cellDim
+          x = 50
+        _.each @buttons, (but) =>
+          but.draw()
       @
 
     click: (e) ->
@@ -42,11 +46,10 @@ define ["underscore", "util", "board", "drawer", "button"], (_, util, b, d, bu) 
       _.each game.buttons, (but) =>
         if but.isClicked(x, y)
           game.clicks++ if game.board.select(but.c)
-          util.log game.clicks
 
 
-  run = (canvas) ->
-    game = new Game(canvas, 10)
+  run = (canvasName) ->
+    game = new Game(canvasName, 2)
     setInterval((-> game.draw()), 100)
 
   {
