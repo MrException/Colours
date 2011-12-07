@@ -1,11 +1,25 @@
-define ["underscore", "board", "drawer"], (_, b, d) ->
+define ["underscore", "util", "board", "drawer", "button"], (_, util, b, d, bu) ->
 
   class Game
-    constructor: (@canvas, size) ->
+    constructor: (canvasName, size) ->
+      @canvas = $(canvasName)[0]
       @ctx = @canvas.getContext('2d')
       @board = new b.Board(size)
       @drawer = new d.Drawer(@ctx)
       @cellDim = 300/size
+      @.initButtons()
+      @clicks = 0
+      $(canvasName).on("click", { game: @ }, @.click)
+
+    initButtons: ->
+      @buttons = []
+      _.each [0,1,2,3,4,5], (c) =>
+        if c < 3
+          but = new bu.Button(@drawer, 50+(120*(c)), 375, c)
+        else
+          but = new bu.Button(@drawer, 50+(120*(c-3)), 425, c)
+        @buttons.push(but)
+      @
 
     draw: ->
       @drawer.clear()
@@ -14,27 +28,28 @@ define ["underscore", "board", "drawer"], (_, b, d) ->
       y = 50
       _.each @board.state, (row) =>
         _.each row, (c) =>
-          @drawer.squareF(x, y, @cellDim, @cellDim, @.colour(c))
+          @drawer.squareF(x, y, @cellDim, @cellDim, util.colour(c))
           x += @cellDim
         y += @cellDim
         x = 50
+      _.each @buttons, (but) =>
+        but.draw()
       @
 
-    colour: (n) ->
-      switch n
-        when 0 then "#FF0000" #red
-        when 1 then "#00FF00" #green
-        when 2 then "#0000FF" #blue
-        when 3 then "#000000" #black
-        when 4 then "#FFFFFF" #white
-        when 5 then "#FFFB00" #yellow
-        else console.log "Bad colour?!"
+    click: (e) ->
+      game = e.data.game
+      [x,y] = util.getPos(e, game.canvas)
+      _.each game.buttons, (but) =>
+        if but.isClicked(x, y)
+          game.clicks++ if game.board.select(but.c)
+          util.log game.clicks
+
 
   run = (canvas) ->
     game = new Game(canvas, 10)
-    return setInterval((-> game.draw()), 100)
+    setInterval((-> game.draw()), 100)
 
-  return {
+  {
     run: run,
     Game: Game
   }

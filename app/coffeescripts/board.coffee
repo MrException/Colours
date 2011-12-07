@@ -27,28 +27,30 @@ define ["underscore"], (_) ->
       @
 
     select: (c) ->
+      if @curColour == c
+        return false
       @newColour = c
-      changeCells 0, 0
+      @.changeCells 0, 0
       @curColour = @newColour
+      true
 
     changeCells: (x, y) ->
       @state[x][y] = @newColour
       if (x-1 >= 0 and @state[x-1][y] == @curColour)
-        changeCells x-1, y
+        @.changeCells x-1, y
       if (y-1 >= 0 and @state[x][y-1] == @curColour)
-        changeCells x, y-1
+        @.changeCells x, y-1
       if (x+1 < @size and @state[x+1][y] == @curColour)
-        changeCells x+1, y
+        @.changeCells x+1, y
       if (y+1 < @size and @state[x][y+1] == @curColour)
-        changeCells x, y+1
+        @.changeCells x, y+1
 
     done: ->
+      # loops through everything, kind of ineficient
+      win = true
       _.each @state (row) ->
         _.each row, (cell) ->
-      # this wont work, return returns from .each func
-          return false if cell != @curColour
-      true
+          win = false if cell != @curColour
+      win
 
-  return {
-    Board: Board
-  }
+  { Board: Board }
