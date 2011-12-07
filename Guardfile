@@ -3,8 +3,8 @@ guard 'livereload' do
 end
 
 guard 'haml', output: 'site' do
-  watch %r{^app/.+(\.html\.haml)}
-  watch %r{^spec/.+(\.html\.haml)}
+  watch %r{^app/(.+\.html)\.haml}
+  watch %r{^spec/(.+\.html)\.haml}
 end
 
 guard 'compass', output: 'site/css' do
