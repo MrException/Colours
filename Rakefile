@@ -1,15 +1,17 @@
 require 'less'
+require 'coffee_script'
 
 desc "Generate stylesheets using less"
 task :css do
   parser = Less::Parser.new paths: ['./lib/style']
   Dir.glob('app/stylesheets/*less') do |sheet|
-    less = File.new(sheet, 'r')
-    tree = parser.parse(less.read)
+    tree = parser.parse(File.read(sheet))
 
     out = 'site/css/' + sheet.sub(/.*\//, '').sub(/less$/, 'css')
-    f = File.new(out, File::CREAT|File::TRUNC|File::RDWR, 0644)
-    f.write tree.to_css
+    sh "mkdir -p site/css"
+    File.open(out, File::CREAT|File::TRUNC|File::RDWR, 0644) do |f|
+      f.write tree.to_css
+    end
   end
 end
 
@@ -31,12 +33,22 @@ task :html do
   end
 end
 
-desc "Move all external JS lib files into the site"
+desc "Move all vendor lib files into the site."
 task :lib do
-  Dir.glob('lib/*js') do |f|
-    sh "cp -r #{f} site/js/"
+  Dir.glob('lib/js/*') do |f|
+    sh "cp -r #{f} site/js/lib/"
   end
 end
 
+desc "Move static files into site dir."
+task :static do
+  sh "cp -r static/* site/"
+end
+
+desc "Upload site to server."
+task :deploy do
+
+end
+
 desc "Compile everything"
-task default: [:css, :js, :html, :lib, :spec]
+task default: [:css, :js, :html, :lib, :spec, :static]
