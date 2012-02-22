@@ -1,6 +1,16 @@
-desc "Generate stylesheets using compass"
+require 'less'
+
+desc "Generate stylesheets using less"
 task :css do
-  sh "compass compile"
+  parser = Less::Parser.new paths: ['./lib/style']
+  Dir.glob('app/stylesheets/*less') do |sheet|
+    less = File.new(sheet, 'r')
+    tree = parser.parse(less.read)
+
+    out = 'site/css/' + sheet.sub(/.*\//, '').sub(/less$/, 'css')
+    f = File.new(out, File::CREAT|File::TRUNC|File::RDWR, 0644)
+    f.write tree.to_css
+  end
 end
 
 desc "Generate javascripts from coffeescripts"
@@ -8,7 +18,7 @@ task :js do
   sh "coffee -o site/js/ -c app/coffeescripts/"
 end
 
-desc "Generate spc javascripts from coffeescripts"
+desc "Generate spec javascripts from coffeescripts"
 task :spec do
   sh "coffee -o site/js/spec/ -c spec/"
 end
@@ -23,7 +33,7 @@ end
 
 desc "Move all external JS lib files into the site"
 task :lib do
-  Dir.glob('lib/*') do |f|
+  Dir.glob('lib/*js') do |f|
     sh "cp -r #{f} site/js/"
   end
 end

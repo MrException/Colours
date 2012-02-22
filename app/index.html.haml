@@ -31,12 +31,15 @@
     %script{ src: "js/respond.js" }
     
   %body
-    #container
-      %header
-        %h1 Colours Game!
-      #main{ role: 'main' }
-        %canvas#game{ width: '400', height: '500'}
-      %footer
+    .container
+      .row
+        .span8.offset2
+          .hero-unit
+            %h1 Colours Game!
+            %p Click one of the six coloured buttons at the bottom, and see what happens!
+      .row
+        .span6.offset3.well#game-container
+          %canvas#game{ width: '400', height: '500'}
       
     -# 
       Javascript at the bottom for fast page loading

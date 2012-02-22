@@ -7,10 +7,9 @@ gem 'guard-webrick'
 gem 'guard-coffeescript'
 gem 'guard-haml'
 gem 'guard-livereload'
-gem 'guard-compass'
+gem 'guard-less'
 
-gem 'compass'
+gem 'less'
 gem 'haml'
-gem 'html5-boilerplate'
 
 gem 'localtunnel'
