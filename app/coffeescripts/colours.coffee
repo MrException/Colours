@@ -2,13 +2,17 @@ define ["underscore", "util", "board", "drawer", "button"], (_, util, b, d, bu) 
 
   class Game
     constructor: (canvasName, size) ->
+      # get canvas context, and set up the drawer
       @canvas = $(canvasName)[0]
       @ctx = @canvas.getContext('2d')
-      @board = new b.Board(size)
       @drawer = new d.Drawer(@ctx)
+
+      @board = new b.Board(size)
       @cellDim = 300/size
       @.initButtons()
       @clicks = 0
+
+      # set up the handler for mouse clicks
       $(canvasName).on("click", { game: @ }, @.click)
 
     initButtons: ->
@@ -26,7 +30,7 @@ define ["underscore", "util", "board", "drawer", "button"], (_, util, b, d, bu) 
       if @board.done()
         @drawer.text("WINNER!", 50, 270)
       else
-        @drawer.text(@clicks.toString(), 0, 20)
+        @drawer.text("Moves: " + @clicks.toString(), 0, 20)
         @drawer.squareS(50,50,300,300)
         x = 50
         y = 50
@@ -49,7 +53,7 @@ define ["underscore", "util", "board", "drawer", "button"], (_, util, b, d, bu) 
 
 
   run = (canvasName) ->
-    game = new Game(canvasName, 2)
+    game = new Game(canvasName, 10)
     setInterval((-> game.draw()), 100)
 
   {

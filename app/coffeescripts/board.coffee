@@ -16,6 +16,8 @@ define ["underscore", "util"], (_, util) ->
           board[i][j] = Math.round(Math.round(Math.random()*10)/2)
       @
 
+    copy: ->
+
     print: ->
       b = ""
       _.each @state (row,i) ->
