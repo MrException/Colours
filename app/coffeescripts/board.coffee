@@ -1,4 +1,4 @@
-define ["underscore", "util"], (_, util) ->
+define ["use!underscore", "util"], (_, util) ->
   class Board
     constructor: (@size) ->
       @state = new Array(@size)

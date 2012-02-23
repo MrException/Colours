@@ -1,4 +1,4 @@
-define ["underscore"], (_) ->
+define ["use!underscore"], (_) ->
   class Drawer
     constructor: (@ctx) ->
 

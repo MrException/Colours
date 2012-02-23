@@ -1,4 +1,4 @@
-define ["underscore", "util", "board", "drawer", "button"], (_, util, b, d, bu) ->
+define ["use!underscore", "jquery", "util", "board", "drawer", "button"], (_, $, util, b, d, bu) ->
 
   class Game
     constructor: (canvasName, size) ->

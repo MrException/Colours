@@ -1,4 +1,4 @@
-define ["underscore", "util"], (_, util) ->
+define ["use!underscore", "util"], (_, util) ->
 
   class Button
     constructor: (@drawer, @x, @y, @c) ->

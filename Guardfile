@@ -1,5 +1,5 @@
-guard 'livereload' do
-  watch %r{^site/(.*)}
+guard 'livereload', host: '127.0.0.1', port: '35729' do
+  watch(%r{^site/(.*)}) { |m| m[1] }
 end
 
 guard 'haml', output: 'site', input: 'app' do
